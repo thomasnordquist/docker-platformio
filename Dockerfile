@@ -1,10 +1,10 @@
-FROM alpine
+FROM ubuntu:16.04
 
-RUN apk add --no-cache \
-        python2 \
-        py2-pip \
-    && pip --no-cache-dir install platformio \
-    && apk del py2-pip
+RUN apt-get update \
+	&& apt-get install -y python python-pip \
+	&& pip install --no-cache-dir platformio \
+	&& apt-get -y remove python-pip \
+	&& apt-get -y autoremove \
+	&& rm -rf /var/lib/apt/lists/*
 
-RUN adduser jenkins -D -u 1000 -h /var/jenkins_home
-VOLUME /var/jenkins_home
+RUN adduser jenkins
